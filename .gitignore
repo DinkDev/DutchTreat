@@ -272,3 +272,6 @@ Session.vim
 # Private test configuration and binaries.
 config.ps1
 **/IISApplications
+
+# NPM and Bower packages 
+**/[Ww]ww[Rr]oot/[Ll]ib/

@@ -1,0 +1,12 @@
+{
+  "name": "dutchtreat",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7" 
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
