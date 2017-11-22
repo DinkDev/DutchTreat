@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using DutchTreat.ViewModels;
 
 namespace DutchTreat.Controllers
 {
@@ -17,7 +18,7 @@ namespace DutchTreat.Controllers
         }
 
         [HttpPost("contact")]
-        public IActionResult Contact(object model)
+        public IActionResult Contact(ContactViewModel model)
         {
             return View();
         }
