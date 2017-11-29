@@ -24,8 +24,8 @@ gulp.task('copy', ['clean'], function () {
     var npm = {
         'bootstrap': 'bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}',
         'jquery': 'jquery/dist/jquery*.{js,map}',
-        'jquery-validation': 'jquery-validation/jquery.validate.js',
-        'jquery-validation-unobtrusive': 'jquery-validation-unobtrusive/jquery.validate.unobtrusive.js'
+        'jquery-validation': 'jquery-validation/dist/*.js',
+        'jquery-validation-unobtrusive': 'jquery-validation-unobtrusive/*.js'
     }
 
     for (var destinationDir in npm) {

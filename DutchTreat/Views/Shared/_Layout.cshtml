@@ -17,16 +17,17 @@
       </ul>
     </menu>
   </header>
-  <section class="container"> 
+  <section class="container">
     <h2>@ViewBag.Title</h2>
     @RenderBody()
   </section>
   <footer class="container">
-    <div class="text-center">Copyright 2017 Dutch Treat LLC</div>
+    <div>Copyright 2017 Dutch Treat LLC</div>
   </footer>
 
   <script src="~/lib/jquery/jquery.min.js"></script>
   <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
   <script src="~/js/index.js"></script>
+  @RenderSection("scripts", false)
 </body>
 </html>
