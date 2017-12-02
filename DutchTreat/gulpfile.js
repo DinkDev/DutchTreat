@@ -20,16 +20,17 @@ var paths = {
     lib: './wwwroot/lib/'
 };
 
-gulp.task('copy', ['clean'], function () {
-    var npm = {
-        'bootstrap': 'bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}',
-        'jquery': 'jquery/dist/jquery*.{js,map}',
-        'jquery-validation': 'jquery-validation/dist/*.js',
-        'jquery-validation-unobtrusive': 'jquery-validation-unobtrusive/*.js'
-    }
+gulp.task('copy', ['clean'], function() {
+        var npm = {
+            'bootstrap': 'bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,eot}',
+            'font-awesome': 'font-awesome/**/*.{js,map,css,ttf,svg,woff,eot}',
+            'jquery': 'jquery/dist/jquery*.{js,map}',
+            'jquery-validation': 'jquery-validation/dist/*.js',
+            'jquery-validation-unobtrusive': 'jquery-validation-unobtrusive/*.js'
+        }
 
-    for (var destinationDir in npm) {
-        gulp.src(paths.npm + npm[destinationDir])
-            .pipe(gulp.dest(paths.lib + destinationDir));
-    }
-});
+        for (var destinationDir in npm) {
+            gulp.src(paths.npm + npm[destinationDir])
+                .pipe(gulp.dest(paths.lib + destinationDir));
+        }
+    });
