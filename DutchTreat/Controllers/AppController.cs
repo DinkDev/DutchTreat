@@ -1,16 +1,20 @@
-﻿using DutchTreat.Services;
-using Microsoft.AspNetCore.Mvc;
-using DutchTreat.ViewModels;
-
-namespace DutchTreat.Controllers
+﻿namespace DutchTreat.Controllers
 {
+    using System.Linq;
+    using Microsoft.AspNetCore.Mvc;
+    using Data;
+    using Services;
+    using ViewModels;
+
     public class AppController : Controller
     {
         private readonly IEmailService _emailService;
+        private readonly IDutchRepository _repository;
 
-        public AppController(IEmailService emailService)
+        public AppController(IEmailService emailService, IDutchRepository repository)
         {
             _emailService = emailService;
+            _repository = repository;
         }
 
         public IActionResult Index()
@@ -45,6 +49,13 @@ namespace DutchTreat.Controllers
             ViewBag.Title = "About Us";
 
             return View();
+        }
+
+        public IActionResult Shop()
+        {
+            var results = _repository.GetAllProducts();
+
+            return View(results);
         }
     }
 }

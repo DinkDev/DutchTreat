@@ -5,14 +5,33 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DutchTreat
 {
+    using Data;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+
     public class Startup
     {
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DutchContext>(cfg =>
+            {
+                cfg.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
+            });
+
             // TODO: add support for real email service
             services.AddTransient<IEmailService, NullEmailService>();
+            services.AddTransient<DutchSeeder>();
+
+            services.AddScoped<IDutchRepository, DutchRepository>();
 
             services.AddMvc();
         }
@@ -38,6 +57,15 @@ namespace DutchTreat
                     new { controller = "App", Action = "Index" });
             });
 
+            if (env.IsDevelopment())
+            {
+                // seed the database
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var seeder = scope.ServiceProvider.GetService<DutchSeeder>();
+                    seeder.Seed();
+                }
+            }
         }
     }
 }
