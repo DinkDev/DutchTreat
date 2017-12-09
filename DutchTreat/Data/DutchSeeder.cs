@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace DutchTreat.Data
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
-    using Entities;
+    using System.Linq;
     using Microsoft.AspNetCore.Hosting;
     using Newtonsoft.Json;
+
+    using Entities;
 
     public class DutchSeeder
     {

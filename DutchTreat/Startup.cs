@@ -5,9 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DutchTreat
 {
+    using AutoMapper;
     using Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -27,13 +29,18 @@ namespace DutchTreat
                 cfg.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
             });
 
+            services.AddAutoMapper();
+
             // TODO: add support for real email service
             services.AddTransient<IEmailService, NullEmailService>();
             services.AddTransient<DutchSeeder>();
 
             services.AddScoped<IDutchRepository, DutchRepository>();
 
-            services.AddMvc();
+            // in JSON, just don't build out looped references (Order --> child OrderItems -X-> parent Order)
+            services
+                .AddMvc()
+                .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +64,7 @@ namespace DutchTreat
                     new { controller = "App", Action = "Index" });
             });
 
+            // Will cause "dotnet ef database update" to crash when creating a new database
             if (env.IsDevelopment())
             {
                 // seed the database

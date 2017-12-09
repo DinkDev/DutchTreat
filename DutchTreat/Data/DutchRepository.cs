@@ -6,6 +6,7 @@
     using Microsoft.Extensions.Logging;
 
     using Entities;
+    using Microsoft.EntityFrameworkCore;
 
     public class DutchRepository : IDutchRepository
     {
@@ -16,6 +17,11 @@
         {
             _ctx = ctx;
             _logger = logger;
+        }
+
+        public void AddEntity(object entity)
+        {
+            _ctx.Add(entity);
         }
 
         public IEnumerable<Product> GetAllProducts()
@@ -32,6 +38,29 @@
                 _logger.LogError($"{nameof(GetAllProducts)} failed: {ex}");
                 return null;
             }
+        }
+
+        public IEnumerable<Order> GetAllOrders(bool includeItems)
+        {
+            if (includeItems)
+            {
+                return _ctx.Orders
+                    .Include(o => o.Items)
+                    .ThenInclude(i => i.Product) // look inside OrderItem
+                    .ToList();
+            }
+            else
+            {
+                return _ctx.Orders.ToList();
+            }
+        }
+
+        public Order GetOrderById(int id)
+        {
+            return _ctx.Orders
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Product)    // look inside OrderItem
+                .FirstOrDefault(o => o.Id == id);
         }
 
         public IEnumerable<Product> GetProductsByCategory(string category)
