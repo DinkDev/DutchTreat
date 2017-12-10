@@ -1,9 +1,10 @@
 ﻿namespace DutchTreat.Data
 {
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Entities;
 
-    public class DutchContext : DbContext
+    public class DutchContext : IdentityDbContext<StoreUser>
     {
         public DutchContext(DbContextOptions<DutchContext> options) : base(options)
         {

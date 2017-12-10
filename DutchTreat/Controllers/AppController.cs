@@ -1,6 +1,6 @@
 ﻿namespace DutchTreat.Controllers
 {
-    using System.Linq;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Data;
     using Services;
@@ -51,6 +51,7 @@
             return View();
         }
 
+        [Authorize]
         public IActionResult Shop()
         {
             var results = _repository.GetAllProducts();
