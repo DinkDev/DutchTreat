@@ -1,7 +1,7 @@
-﻿namespace DutchTreat.Data
+﻿namespace DutchTreat.Controllers
 {
     using AutoMapper;
-    using Entities;
+    using Data.Entities;
     using ViewModels;
 
     public class DutchMappingProfile : Profile
