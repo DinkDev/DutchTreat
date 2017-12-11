@@ -55,12 +55,30 @@
             }
         }
 
-        public Order GetOrderById(int id)
+        public IEnumerable<Order> GetAllOrdersByUser(string username, bool includeItems)
+        {
+            if (includeItems)
+            {
+                return _ctx.Orders
+                    .Where(o => o.User.UserName == username)
+                    .Include(o => o.Items)
+                    .ThenInclude(i => i.Product) // look inside OrderItem
+                    .ToList();
+            }
+            else
+            {
+                return _ctx.Orders
+                    .Where(o => o.User.UserName == username)
+                    .ToList();
+            }
+        }
+
+        public Order GetOrderById(string username, int id)
         {
             return _ctx.Orders
-                .Include(o => o.Items)
-                .ThenInclude(i => i.Product)    // look inside OrderItem
-                .FirstOrDefault(o => o.Id == id);
+                .Include(o => o.Items)    // look inside OrderItem
+                .ThenInclude(i => i.Product)
+                .FirstOrDefault(o => o.Id == id && o.User.UserName == username);
         }
 
         public IEnumerable<Product> GetProductsByCategory(string category)

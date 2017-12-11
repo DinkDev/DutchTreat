@@ -19,7 +19,7 @@
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_config["ConnectionStrings:DutchConnectionString"]);
+            optionsBuilder.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
             base.OnConfiguring(optionsBuilder);
         }
     }

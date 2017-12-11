@@ -2,23 +2,34 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using AutoMapper;
     using Data;
     using Data.Entities;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using ViewModels;
 
     [Route("api/[Controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrdersController : Controller
     {
         private readonly IDutchRepository _repository;
+        private readonly UserManager<StoreUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<OrdersController> _logger;
 
-        public OrdersController(IDutchRepository repository, IMapper mapper, ILogger<OrdersController> logger)
+        public OrdersController(
+            IDutchRepository repository, 
+            UserManager<StoreUser> userManager,
+            IMapper mapper, 
+            ILogger<OrdersController> logger)
         {
             _repository = repository;
+            _userManager = userManager;
             _mapper = mapper;
             _logger = logger;
         }
@@ -28,7 +39,9 @@
         {
             try
             {
-                var results = _repository.GetAllOrders(includeItems);
+                var username = User.Identity.Name;
+
+                var results = _repository.GetAllOrdersByUser(username, includeItems);
                 return Ok(_mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(results));
             }
             catch (Exception ex)
@@ -43,7 +56,9 @@
         {
             try
             {
-                var order = _repository.GetOrderById(id);
+                var username = User.Identity.Name;
+
+                var order = _repository.GetOrderById(username, id);
                 if (order != null) return Ok(_mapper.Map<Order, OrderViewModel>(order));
                 else return NotFound();
             }
@@ -55,7 +70,7 @@
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] OrderViewModel model)
+        public async Task<IActionResult> Post([FromBody] OrderViewModel model)
         {
             // add item to the database
             try
@@ -68,6 +83,9 @@
                     {
                         newOrder.OrderDate = DateTime.Now;
                     }
+
+                    var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                    newOrder.User = currentUser;
 
                     _repository.AddEntity(newOrder);
                     if (_repository.SaveAll())

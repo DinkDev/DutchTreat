@@ -5,25 +5,51 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DutchTreat
 {
+    using System.Text;
     using AutoMapper;
     using Data;
+    using Data.Entities;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
 
     public class Startup
     {
         private readonly IConfiguration _config;
+        private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env)
         {
             _config = config;
+            _env = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<StoreUser, IdentityRole>(cfg =>
+                {
+                    cfg.User.RequireUniqueEmail = true;
+
+                })
+                .AddEntityFrameworkStores<DutchContext>();
+
+            services.AddAuthentication()
+                .AddCookie()
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = _config["Tokens:Issuer"],
+                        ValidAudience = _config["Tokens:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]))
+                    };
+                });
+
             services.AddDbContext<DutchContext>(cfg =>
             {
                 cfg.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
@@ -39,7 +65,13 @@ namespace DutchTreat
 
             // in JSON, just don't build out looped references (Order --> child OrderItems -X-> parent Order)
             services
-                .AddMvc()
+                .AddMvc(opt =>
+                {
+                    if (_env.IsProduction())
+                    {
+                        opt.Filters.Add(new RequireHttpsAttribute());
+                    }
+                })
                 .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
@@ -57,6 +89,8 @@ namespace DutchTreat
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();    // should be before MVC
+
             app.UseMvc(cfg =>
             {
                 cfg.MapRoute("Default",
@@ -71,7 +105,7 @@ namespace DutchTreat
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var seeder = scope.ServiceProvider.GetService<DutchSeeder>();
-                    seeder.Seed();
+                    seeder.Seed().Wait();
                 }
             }
         }
