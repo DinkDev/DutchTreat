@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var Storecustomer = require("./storecustomer");
-var StoreCustomer = Storecustomer.StoreCustomer;
+//import { StoreCustomer } from "./storecustomer";
 var shopper = new StoreCustomer('Shawn', 'Wildermuth');
 shopper.showName();
 //# sourceMappingURL=main.js.map

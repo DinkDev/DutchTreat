@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "sourceMap":  true
+    "module": "none",
+    "sourceMap": true
   },
 
-  "include": [ "wwwroot/ts/**/*.ts" ]
+  "include": [ "wwwroot/ts/**/*.ts" ],
+  "compileOnSave": true
 }

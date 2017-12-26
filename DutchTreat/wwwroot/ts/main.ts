@@ -1,4 +1,4 @@
-﻿import Storecustomer = require("./storecustomer");
-import StoreCustomer = Storecustomer.StoreCustomer;
+﻿//import { StoreCustomer } from "./storecustomer";
+
 let shopper = new StoreCustomer('Shawn', 'Wildermuth');
 shopper.showName();
