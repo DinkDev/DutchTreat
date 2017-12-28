@@ -2,19 +2,16 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Data;
     using Services;
     using ViewModels;
 
     public class AppController : Controller
     {
         private readonly IEmailService _emailService;
-        private readonly IDutchRepository _repository;
 
-        public AppController(IEmailService emailService, IDutchRepository repository)
+        public AppController(IEmailService emailService)
         {
             _emailService = emailService;
-            _repository = repository;
         }
 
         public IActionResult Index()
@@ -54,9 +51,7 @@
         [Authorize]
         public IActionResult Shop()
         {
-            var results = _repository.GetAllProducts();
-
-            return View(results);
+            return View();
         }
     }
 }
