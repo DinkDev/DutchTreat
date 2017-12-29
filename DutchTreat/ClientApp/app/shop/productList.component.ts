@@ -5,7 +5,7 @@ import { Product } from '../shared/product';
 @Component({
   selector: 'product-list',
   templateUrl: 'productList.component.html',
-  styleUrls: []
+  styleUrls: [ 'productList.component.css' ]
 })
 export class ProductList implements OnInit {
   public products: Product[];
@@ -21,5 +21,9 @@ export class ProductList implements OnInit {
           this.products = this.data.products;
         }
       });
+  }
+
+  addProduct(product: Product) {
+    this.data.addToOrder(product);
   }
 }

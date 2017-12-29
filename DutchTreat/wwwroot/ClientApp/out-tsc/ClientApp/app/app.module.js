@@ -8,8 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
+var http_1 = require("@angular/common/http");
 var app_component_1 = require("./app.component");
 var productList_component_1 = require("./shop/productList.component");
+var dataService_1 = require("./shared/dataService");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -20,9 +22,12 @@ var AppModule = /** @class */ (function () {
                 productList_component_1.ProductList
             ],
             imports: [
-                platform_browser_1.BrowserModule
+                platform_browser_1.BrowserModule,
+                http_1.HttpClientModule
             ],
-            providers: [],
+            providers: [
+                dataService_1.DataService
+            ],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
