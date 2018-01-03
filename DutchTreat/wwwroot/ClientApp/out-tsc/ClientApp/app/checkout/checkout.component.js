@@ -11,32 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var dataService_1 = require("../shared/dataService");
-var ProductList = /** @class */ (function () {
-    function ProductList(data) {
+var router_1 = require("@angular/router");
+var Checkout = /** @class */ (function () {
+    function Checkout(data, router) {
         this.data = data;
-        this.products = data.products;
+        this.router = router;
+        this.errorMessage = "";
     }
-    ProductList.prototype.ngOnInit = function () {
-        var _this = this;
-        this.data.loadProducts()
-            .subscribe(function (success) {
-            if (success) {
-                _this.products = _this.data.products;
-            }
-        });
-    };
-    ProductList.prototype.addProduct = function (product) {
-        this.data.addToOrder(product);
-    };
-    ProductList = __decorate([
+    Checkout = __decorate([
         core_1.Component({
-            selector: 'product-list',
-            templateUrl: 'productList.component.html',
-            styleUrls: ['productList.component.css']
+            selector: "checkout",
+            templateUrl: "checkout.component.html",
+            styleUrls: ['checkout.component.css']
         }),
-        __metadata("design:paramtypes", [dataService_1.DataService])
-    ], ProductList);
-    return ProductList;
+        __metadata("design:paramtypes", [dataService_1.DataService, router_1.Router])
+    ], Checkout);
+    return Checkout;
 }());
-exports.ProductList = ProductList;
-//# sourceMappingURL=productList.component.js.map
+exports.Checkout = Checkout;
+//# sourceMappingURL=checkout.component.js.map
