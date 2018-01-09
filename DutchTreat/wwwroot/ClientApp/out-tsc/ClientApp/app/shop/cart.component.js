@@ -11,17 +11,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var dataService_1 = require("../shared/dataService");
+var router_1 = require("@angular/router");
 var Cart = /** @class */ (function () {
-    function Cart(data) {
+    function Cart(data, router) {
         this.data = data;
+        this.router = router;
     }
+    Cart.prototype.onCheckout = function () {
+        if (this.data.loginRequired) {
+            // force login
+            this.router.navigate(['login']);
+        }
+        else {
+            // go to checkout
+            this.router.navigate(['checkout']);
+        }
+    };
     Cart = __decorate([
         core_1.Component({
             selector: 'the-cart',
             templateUrl: 'cart.component.html',
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [dataService_1.DataService])
+        __metadata("design:paramtypes", [dataService_1.DataService, router_1.Router])
     ], Cart);
     return Cart;
 }());
