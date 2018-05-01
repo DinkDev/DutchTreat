@@ -23,8 +23,6 @@ var Login = /** @class */ (function () {
     }
     Login.prototype.onLogin = function () {
         // call the login service
-        alert(this.creds.username);
-        this.creds.username += '!';
     };
     Login = __decorate([
         core_1.Component({
