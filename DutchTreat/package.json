@@ -21,21 +21,21 @@
     "@angular/platform-browser": "^5.2.11",
     "@angular/platform-browser-dynamic": "^5.2.11",
     "@angular/router": "^5.2.11",
-    "bootstrap": "^4.1.2",
-    "core-js": "^2.5.7",
+    "bootstrap": "^4.4.1",
+    "core-js": "^2.6.11",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.3.1",
-    "jquery-validation": "^1.18.0",
+    "jquery": "^3.5.0",
+    "jquery-validation": "^1.19.1",
     "jquery-validation-unobtrusive": "^3.2.11",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.15",
     "rxjs": "^5.5.12",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
-    "@angular/cli": "^7.0.6",
-    "@angular/compiler-cli": "^5.2.11",
+    "@angular/cli": "^9.1.4",
+    "@angular/compiler-cli": "^9.1.4",
     "@angular/language-service": "^5.2.11",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "typescript": "~2.4.2"
   }
 }
